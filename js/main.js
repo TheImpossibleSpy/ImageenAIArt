@@ -1,14 +1,21 @@
-// --- Snippets for categories ---
+// ---------------------------
+// Snippet Constructor
+// ---------------------------
 const snippetData = {
     lighting: ["Cinematic Lighting", "Neon Lights", "Moody Shadows", "Golden Hour"],
     style: ["Ultra-detailed", "Photorealistic", "Anime Style", "Watercolor Painting"],
     subject: ["Cityscape", "Forest", "Space Station", "Fantasy Castle"]
 };
 
-// Store selected snippets
-let promptSnippets = [];
+let snippetChips = [];  // only buttons
+let manualPrompt = "";  // user typed manually
 
-// --- Render snippet buttons ---
+// Track textarea edits
+document.getElementById("prompt").addEventListener("input", (e) => {
+    manualPrompt = e.target.value;
+});
+
+// Render snippet buttons
 function renderSnippetButtons() {
     Object.entries(snippetData).forEach(([category, snippets]) => {
         const container = document.getElementById(`${category}Snippets`);
@@ -16,10 +23,9 @@ function renderSnippetButtons() {
             const btn = document.createElement("button");
             btn.classList.add("snippet-btn");
             btn.innerText = text;
-            btn.style.margin = "5px";
             btn.addEventListener("click", () => {
-                if (!promptSnippets.includes(text)) {
-                    promptSnippets.push(text);
+                if (!snippetChips.includes(text)) {
+                    snippetChips.push(text);
                     updatePromptUI();
                 }
             });
@@ -28,12 +34,12 @@ function renderSnippetButtons() {
     });
 }
 
-// --- Update chips and textarea ---
+// Update chips + textarea
 function updatePromptUI() {
     const chipsContainer = document.getElementById("promptChips");
     chipsContainer.innerHTML = "";
 
-    promptSnippets.forEach((snippet, index) => {
+    snippetChips.forEach((snippet, index) => {
         const chip = document.createElement("div");
         chip.innerText = snippet + " ✕";
         chip.style.border = "1px solid #ccc";
@@ -43,24 +49,31 @@ function updatePromptUI() {
         chip.style.background = "#eee";
 
         chip.addEventListener("click", () => {
-            promptSnippets.splice(index, 1);
+            snippetChips.splice(index, 1);
             updatePromptUI();
         });
 
         chipsContainer.appendChild(chip);
     });
 
-    document.getElementById("prompt").value = promptSnippets.join(", ");
+    // Merge snippets + manual edits
+    let finalPrompt = snippetChips.join(", ");
+    if (manualPrompt.trim() !== "") {
+        if (finalPrompt) finalPrompt += ", ";
+        finalPrompt += manualPrompt;
+    }
+
+    document.getElementById("prompt").value = finalPrompt;
 }
 
-// --- Call render on page load ---
+// Render buttons on page load
 document.addEventListener("DOMContentLoaded", () => {
     renderSnippetButtons();
 });
 
-// -----------------------------
-// PHASE 1: Generate Image code
-// -----------------------------
+// ---------------------------
+// Phase 1: Generate Image
+// ---------------------------
 const HORDE_URL = "https://aihorde.net/api/v2/generate/async";
 
 async function generateImage() {
@@ -75,12 +88,15 @@ async function generateImage() {
 
     const payload = {
         prompt: prompt,
+        model: document.getElementById("modelSelect").value,
         params: {
-            width: 512,
-            height: 512,
-            steps: 20,
-            sampler_name: "k_euler",
-            cfg_scale: 7
+            width: parseInt(document.getElementById("widthInput").value),
+            height: parseInt(document.getElementById("heightInput").value),
+            steps: parseInt(document.getElementById("stepsInput").value),
+            sampler_name: document.getElementById("samplerSelect").value,
+            cfg_scale: parseFloat(document.getElementById("cfgInput").value),
+            seed: document.getElementById("seedInput").value || undefined,
+            hires_fix: document.getElementById("hiresFixInput").checked
         }
     };
 
@@ -121,7 +137,7 @@ async function generateImage() {
     }
 }
 
-// ---- Polling Function (handles 429) ----
+// ---- Polling Function (handles 429 rate limit) ----
 async function pollForImage(id) {
     const statusUrl = `https://aihorde.net/api/v2/generate/status/${id}`;
 
