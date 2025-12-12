@@ -24,3 +24,7 @@ button {
     font-weight: bold;
     margin-bottom: 20px;
 }
+
+#promptChips div:hover {
+    background-color: #ddd;
+}
