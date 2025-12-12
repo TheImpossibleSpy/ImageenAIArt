@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ImageenAI - Test Generate</title>
+    <title>ImageenAI - Phase 1</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
@@ -9,7 +9,13 @@
     <h1>ImageenAI - Phase 1 Test</h1>
 
     <textarea id="prompt" placeholder="Enter prompt here..."></textarea>
+    <br>
+    <input id="apiKey" placeholder="Enter your AI Horde API Key" type="text" style="width: 400px;">
+    <br>
     <button id="generateBtn">Generate Image</button>
+
+    <h2>Status</h2>
+    <div id="status">Idle</div>
 
     <h2>Result</h2>
     <img id="resultImage" style="max-width: 512px; display: none;" />
@@ -17,4 +23,3 @@
     <script src="js/main.js"></script>
 </body>
 </html>
-
