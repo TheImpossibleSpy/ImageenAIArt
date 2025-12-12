@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ImageenAI - Phase 1</title>
+    <title>ImageenAI - Phase 2</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <h1>ImageenAI - Phase 1 Test</h1>
+    <h1>ImageenAI - Prompt Constructor</h1>
 
-    <textarea id="prompt" placeholder="Enter prompt here..."></textarea>
-    <h2>Prompt Constructor</h2>
-<div id="snippetButtons">
-    <button class="snippet-btn" data-text="cinematic lighting">Cinematic Lighting</button>
-    <button class="snippet-btn" data-text="ultra-detailed">Ultra-detailed</button>
-    <button class="snippet-btn" data-text="night scene">Night Scene</button>
-    <button class="snippet-btn" data-text="vibrant colors">Vibrant Colors</button>
-</div>
-
-<h3>Prompt Chips:</h3>
-<div id="promptChips" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
-
-    <br>
     <input id="apiKey" placeholder="Enter your AI Horde API Key" type="text" style="width: 400px;">
-    <br>
-    <button id="generateBtn">Generate Image</button>
+    
+    <h2>Prompt Constructor</h2>
+    <textarea id="prompt" placeholder="Your assembled prompt here..." style="width: 100%; height: 100px;"></textarea>
+
+    <div id="snippetCategories">
+        <h3>Lighting</h3>
+        <div class="category" id="lightingSnippets"></div>
+
+        <h3>Style</h3>
+        <div class="category" id="styleSnippets"></div>
+
+        <h3>Subject</h3>
+        <div class="category" id="subjectSnippets"></div>
+    </div>
+
+    <h3>Prompt Chips:</h3>
+    <div id="promptChips" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
+
+    <button id="generateBtn" style="margin-top:20px;">Generate Image</button>
 
     <h2>Status</h2>
     <div id="status">Idle</div>
