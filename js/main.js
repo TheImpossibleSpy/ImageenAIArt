@@ -42,11 +42,7 @@ function updatePromptUI() {
     snippetChips.forEach((snippet, index) => {
         const chip = document.createElement("div");
         chip.innerText = snippet + " ✕";
-        chip.style.border = "1px solid #ccc";
-        chip.style.borderRadius = "12px";
-        chip.style.padding = "5px 10px";
-        chip.style.cursor = "pointer";
-        chip.style.background = "#eee";
+        chip.classList.add("chip");
 
         chip.addEventListener("click", () => {
             snippetChips.splice(index, 1);
