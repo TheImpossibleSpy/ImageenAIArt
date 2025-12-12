@@ -1,24 +1,37 @@
-// --- CONFIG ---
-const HORDE_URL = "https://aihorde.net/api/v2/generate/async";
+// --- Snippets for categories ---
+const snippetData = {
+    lighting: ["Cinematic Lighting", "Neon Lights", "Moody Shadows", "Golden Hour"],
+    style: ["Ultra-detailed", "Photorealistic", "Anime Style", "Watercolor Painting"],
+    subject: ["Cityscape", "Forest", "Space Station", "Fantasy Castle"]
+};
 
-// Array to store snippets
+// Store selected snippets
 let promptSnippets = [];
 
-// Add click listeners to snippet buttons
-document.querySelectorAll(".snippet-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const text = btn.dataset.text;
-        if (!promptSnippets.includes(text)) {
-            promptSnippets.push(text);
-            updatePromptUI();
-        }
+// --- Render snippet buttons ---
+function renderSnippetButtons() {
+    Object.entries(snippetData).forEach(([category, snippets]) => {
+        const container = document.getElementById(`${category}Snippets`);
+        snippets.forEach(text => {
+            const btn = document.createElement("button");
+            btn.classList.add("snippet-btn");
+            btn.innerText = text;
+            btn.style.margin = "5px";
+            btn.addEventListener("click", () => {
+                if (!promptSnippets.includes(text)) {
+                    promptSnippets.push(text);
+                    updatePromptUI();
+                }
+            });
+            container.appendChild(btn);
+        });
     });
-});
+}
 
-// Update chips display and textarea
+// --- Update chips and textarea ---
 function updatePromptUI() {
     const chipsContainer = document.getElementById("promptChips");
-    chipsContainer.innerHTML = ""; // clear old
+    chipsContainer.innerHTML = "";
 
     promptSnippets.forEach((snippet, index) => {
         const chip = document.createElement("div");
@@ -29,7 +42,6 @@ function updatePromptUI() {
         chip.style.cursor = "pointer";
         chip.style.background = "#eee";
 
-        // Remove snippet on click
         chip.addEventListener("click", () => {
             promptSnippets.splice(index, 1);
             updatePromptUI();
@@ -38,12 +50,19 @@ function updatePromptUI() {
         chipsContainer.appendChild(chip);
     });
 
-    // Update main prompt textarea
     document.getElementById("prompt").value = promptSnippets.join(", ");
 }
 
+// --- Call render on page load ---
+document.addEventListener("DOMContentLoaded", () => {
+    renderSnippetButtons();
+});
 
-// ---- GENERATION FUNCTION ----
+// -----------------------------
+// PHASE 1: Generate Image code
+// -----------------------------
+const HORDE_URL = "https://aihorde.net/api/v2/generate/async";
+
 async function generateImage() {
     const prompt = document.getElementById("prompt").value.trim();
     const apiKey = document.getElementById("apiKey").value.trim();
@@ -64,8 +83,6 @@ async function generateImage() {
             cfg_scale: 7
         }
     };
-
-    console.log("Sending payload:", payload);
 
     let res;
     try {
@@ -104,7 +121,7 @@ async function generateImage() {
     }
 }
 
-// ---- POLLING FUNCTION ----
+// ---- Polling Function (handles 429) ----
 async function pollForImage(id) {
     const statusUrl = `https://aihorde.net/api/v2/generate/status/${id}`;
 
@@ -119,7 +136,7 @@ async function pollForImage(id) {
         }
 
         if (res.status === 429) {
-            console.warn("Rate limited, waiting 10 seconds...");
+            console.warn("Rate limited, waiting 10s...");
             document.getElementById("status").innerText = "Rate limited, waiting...";
             await new Promise(r => setTimeout(r, 10000));
             continue;
@@ -129,12 +146,8 @@ async function pollForImage(id) {
         console.log("Polling:", json);
 
         if (json.finished) {
-            if (json.generations.length > 0) {
-                return json.generations[0].img;
-            } else {
-                console.warn("Finished but no generations, retrying...");
-                await new Promise(r => setTimeout(r, 7000));
-            }
+            if (json.generations.length > 0) return json.generations[0].img;
+            await new Promise(r => setTimeout(r, 7000));
         } else {
             document.getElementById("status").innerText = "Processing... please wait";
             await new Promise(r => setTimeout(r, 7000));
@@ -142,5 +155,5 @@ async function pollForImage(id) {
     }
 }
 
-// ---- button hookup ----
+// ---- Hook generate button ----
 document.getElementById("generateBtn").onclick = generateImage;
