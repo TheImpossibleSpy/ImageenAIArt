@@ -1,29 +1,195 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
     padding: 20px;
 }
 
-textarea {
+.app-title {
+    text-align: center;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    margin-bottom: 30px;
+}
+
+/* Card Styling - Glassmorphism */
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+    margin-bottom: 25px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+h2, h3 {
+    margin-top: 0;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Glass Inputs & Textareas */
+.glass-input {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 10px;
+    color: white;
+    font-family: inherit;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+}
+
+.glass-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.glass-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.full-width {
     width: 100%;
-    height: 100px;
-    display: block;
-    margin-bottom: 10px;
 }
 
-input, select {
-    padding: 5px;
+textarea.glass-input {
+    width: 100%;
+    height: 120px;
+    resize: vertical;
 }
 
-button {
-    padding: 10px 20px;
-    margin-bottom: 10px;
+/* Button Styling */
+.glass-button {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 12px 24px;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(4px);
+    width: 100%;
 }
 
-#promptChips div:hover {
-    background-color: #ddd;
+.glass-button:hover {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+.glass-button:active {
+    transform: translateY(0);
+}
+
+/* Category Buttons */
 .category button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 6px 12px;
     margin: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.category button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Prompt Chips */
+.chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 40px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.chip {
+    background: rgba(100, 200, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 5px 10px;
+    border-radius: 16px;
+    font-size: 14px;
+    cursor: pointer;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+}
+
+.chip:hover {
+    background: rgba(100, 200, 255, 0.5);
+}
+
+/* Settings Grid */
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.setting-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.setting-item label {
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.checkbox-item {
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.checkbox-item input {
+    margin: 0;
+}
+
+/* Result Image */
+.result-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#resultImage {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Select options fix - options cannot be transparent usually on standard select */
+select.glass-input option {
+    background: #333;
+    color: white;
 }
