@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>ImageenAI - Phase 2</title>
+    <title>ImageenAI - Phase 3</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-    <h1>ImageenAI - Prompt Constructor</h1>
+    <h1>ImageenAI - Prompt Constructor + Advanced Settings</h1>
 
-    <input id="apiKey" placeholder="Enter your AI Horde API Key" type="text" style="width: 400px;">
+    <input id="apiKey" placeholder="Enter your AI Horde API Key" type="text" style="width: 400px; margin-bottom: 20px;">
     
     <h2>Prompt Constructor</h2>
     <textarea id="prompt" placeholder="Your assembled prompt here..." style="width: 100%; height: 100px;"></textarea>
@@ -26,6 +26,51 @@
 
     <h3>Prompt Chips:</h3>
     <div id="promptChips" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
+
+    <h2>Advanced Settings</h2>
+    <div id="advancedSettings" style="display:flex; flex-wrap:wrap; gap:20px; margin-bottom:20px;">
+        <div>
+            <label>Seed:</label>
+            <input type="number" id="seedInput" placeholder="Random if empty">
+        </div>
+        <div>
+            <label>Steps:</label>
+            <input type="number" id="stepsInput" value="20">
+        </div>
+        <div>
+            <label>CFG Scale:</label>
+            <input type="number" id="cfgInput" value="7" step="0.1">
+        </div>
+        <div>
+            <label>Sampler:</label>
+            <select id="samplerSelect">
+                <option value="k_euler">k_euler</option>
+                <option value="k_euler_ancestral">k_euler_ancestral</option>
+                <option value="k_lms">k_lms</option>
+                <option value="plms">plms</option>
+            </select>
+        </div>
+        <div>
+            <label>Width:</label>
+            <input type="number" id="widthInput" value="512">
+        </div>
+        <div>
+            <label>Height:</label>
+            <input type="number" id="heightInput" value="512">
+        </div>
+        <div>
+            <label>Hires Fix:</label>
+            <input type="checkbox" id="hiresFixInput">
+        </div>
+        <div>
+            <label>Model:</label>
+            <select id="modelSelect">
+                <option value="stable_diffusion_1.5">Stable Diffusion 1.5</option>
+                <option value="stable_diffusion_2.1">Stable Diffusion 2.1</option>
+                <option value="realistic_vision">Realistic Vision</option>
+            </select>
+        </div>
+    </div>
 
     <button id="generateBtn" style="margin-top:20px;">Generate Image</button>
 
