@@ -4,27 +4,26 @@ body {
 }
 
 textarea {
-    width: 400px;
+    width: 100%;
     height: 100px;
     display: block;
     margin-bottom: 10px;
 }
 
-input {
-    margin-bottom: 10px;
+input, select {
     padding: 5px;
 }
 
 button {
     padding: 10px 20px;
-    margin-bottom: 20px;
-}
-
-#status {
-    font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
 }
 
 #promptChips div:hover {
     background-color: #ddd;
+}
+
+.category button {
+    margin: 5px;
 }
