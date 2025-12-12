@@ -1,6 +1,48 @@
 // --- CONFIG ---
 const HORDE_URL = "https://aihorde.net/api/v2/generate/async";
 
+// Array to store snippets
+let promptSnippets = [];
+
+// Add click listeners to snippet buttons
+document.querySelectorAll(".snippet-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const text = btn.dataset.text;
+        if (!promptSnippets.includes(text)) {
+            promptSnippets.push(text);
+            updatePromptUI();
+        }
+    });
+});
+
+// Update chips display and textarea
+function updatePromptUI() {
+    const chipsContainer = document.getElementById("promptChips");
+    chipsContainer.innerHTML = ""; // clear old
+
+    promptSnippets.forEach((snippet, index) => {
+        const chip = document.createElement("div");
+        chip.innerText = snippet + " ✕";
+        chip.style.border = "1px solid #ccc";
+        chip.style.borderRadius = "12px";
+        chip.style.padding = "5px 10px";
+        chip.style.cursor = "pointer";
+        chip.style.background = "#eee";
+
+        // Remove snippet on click
+        chip.addEventListener("click", () => {
+            promptSnippets.splice(index, 1);
+            updatePromptUI();
+        });
+
+        chipsContainer.appendChild(chip);
+    });
+
+    // Update main prompt textarea
+    document.getElementById("prompt").value = promptSnippets.join(", ");
+}
+
+
 // ---- GENERATION FUNCTION ----
 async function generateImage() {
     const prompt = document.getElementById("prompt").value.trim();
